@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cache_demo
+    ports:
+      - "4306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - caching-demo-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  redis:
+    image: redis:alpine
+    container_name: redis-container
+    ports:
+      - "6379:6379"
+    networks:
+      - caching-demo-net
+
+  memcached:
+    image: memcached:alpine
+    container_name: memcached-container
+    ports:
+      - "11211:11211"
+    networks:
+      - caching-demo-net
+
+  hazelcast:
+    image: hazelcast/hazelcast:5.3
+    container_name: hazelcast-container
+    ports:
+      - "5701:5701"
+    networks:
+      - caching-demo-net
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: caching-demo-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      memcached:
+        condition: service_started
+      hazelcast:
+        condition: service_started
+    networks:
+      - caching-demo-net
+
+volumes:
+  mysql-data:
+
+networks:
+  caching-demo-net:
+    driver: bridge

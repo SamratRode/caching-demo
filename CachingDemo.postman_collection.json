@@ -1,0 +1,358 @@
+{
+  "info": {
+    "name": "Caching Demo - Redis, Memcached, Hazelcast",
+    "description": "Collection for testing different caching strategies in Spring Boot",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Data Management",
+      "item": [
+        {
+          "name": "Store Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key\": \"weather-toronto\",\n  \"value\": {\n    \"city\": \"Toronto\",\n    \"temperature\": 22,\n    \"humidity\": 65,\n    \"condition\": \"Sunny\",\n    \"timestamp\": \"2025-06-24T14:30:00\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/data",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "data"]
+            }
+          }
+        },
+        {
+          "name": "Get Data from Database",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/data/weather-toronto",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "data", "weather-toronto"]
+            }
+          }
+        },
+        {
+          "name": "Delete Data",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/data/weather-toronto",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "data", "weather-toronto"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Redis Cache",
+      "item": [
+        {
+          "name": "Get from Redis Cache",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cache/redis/weather-toronto",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "cache", "redis", "weather-toronto"]
+            }
+          }
+        },
+        {
+          "name": "Evict from Redis Cache",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cache/redis/weather-toronto",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "cache", "redis", "weather-toronto"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Memcached Cache",
+      "item": [
+        {
+          "name": "Get from Memcached Cache",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cache/memcached/weather-toronto",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "cache", "memcached", "weather-toronto"]
+            }
+          }
+        },
+        {
+          "name": "Evict from Memcached Cache",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cache/memcached/weather-toronto",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "cache", "memcached", "weather-toronto"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hazelcast Cache",
+      "item": [
+        {
+          "name": "Get from Hazelcast Cache",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cache/hazelcast/weather-toronto",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "cache", "hazelcast", "weather-toronto"]
+            }
+          }
+        },
+        {
+          "name": "Get Hazelcast Stats",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cache/hazelcast/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "cache", "hazelcast", "stats"]
+            }
+          }
+        },
+        {
+          "name": "Evict from Hazelcast Cache",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cache/hazelcast/weather-toronto",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "cache", "hazelcast", "weather-toronto"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Metrics",
+      "item": [
+        {
+          "name": "Get All Metrics",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/metrics?limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "metrics"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "20"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Redis Metrics",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/metrics/redis",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "metrics", "redis"]
+            }
+          }
+        },
+        {
+          "name": "Get Memcached Metrics",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/metrics/memcached",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "metrics", "memcached"]
+            }
+          }
+        },
+        {
+          "name": "Get Hazelcast Metrics",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/metrics/hazelcast",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "metrics", "hazelcast"]
+            }
+          }
+        },
+        {
+          "name": "Clear All Metrics",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/metrics",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "metrics"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Demo Flow - Test All Caches",
+      "item": [
+        {
+          "name": "1. Store Test Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"key\": \"demo-data\",\n  \"value\": {\n    \"message\": \"Hello from Sun Life Financial!\",\n    \"timestamp\": \"2025-06-24T14:30:00\",\n    \"session\": \"Cache Comparison Demo\",\n    \"presenter\": \"Java Developer\"\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/data",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "data"]
+            }
+          }
+        },
+        {
+          "name": "2. Test Redis Cache (First Call - Cache Miss)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cache/redis/demo-data",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "cache", "redis", "demo-data"]
+            }
+          }
+        },
+        {
+          "name": "3. Test Redis Cache (Second Call - Cache Hit)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cache/redis/demo-data",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "cache", "redis", "demo-data"]
+            }
+          }
+        },
+        {
+          "name": "4. Test Memcached Cache (First Call - Cache Miss)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cache/memcached/demo-data",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "cache", "memcached", "demo-data"]
+            }
+          }
+        },
+        {
+          "name": "5. Test Memcached Cache (Second Call - Cache Hit)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cache/memcached/demo-data",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "cache", "memcached", "demo-data"]
+            }
+          }
+        },
+        {
+          "name": "6. Test Hazelcast Cache (First Call - Cache Miss)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cache/hazelcast/demo-data",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "cache", "hazelcast", "demo-data"]
+            }
+          }
+        },
+        {
+          "name": "7. Test Hazelcast Cache (Second Call - Cache Hit)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cache/hazelcast/demo-data",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "cache", "hazelcast", "demo-data"]
+            }
+          }
+        },
+        {
+          "name": "8. View Performance Metrics",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/metrics?limit=10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "metrics"],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health & Documentation",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/actuator/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["actuator", "health"]
+            }
+          }
+        },
+        {
+          "name": "Swagger UI",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/swagger-ui/index.html",
+              "host": ["{{baseUrl}}"],
+              "path": ["swagger-ui", "index.html"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

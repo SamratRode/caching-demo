@@ -1,0 +1,86 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.5'
+    id 'io.spring.dependency-management' version '1.1.5'
+}
+
+group = 'com.sunlife.demo'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+    mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/repositories/releases' }
+}
+
+dependencies {
+    // Spring Core
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    // Caching and DB
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'net.spy:spymemcached:2.12.3'
+    implementation 'com.hazelcast:hazelcast:5.3.6'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+
+    // Swagger/OpenAPI
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+
+    // Lombok & Testing
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
+// Build Docker image from Dockerfile
+tasks.register('dockerBuild', Exec) {
+    group = 'Docker'
+    description = 'Build Docker image for the app'
+    dependsOn 'composeUp', 'build'
+    commandLine 'docker', 'build', '-t', 'caching-demo-app', '.'
+}
+
+// Run the app container after image is built
+tasks.register('dockerRun', Exec) {
+    group = 'Docker'
+    description = 'Run the Spring Boot application container'
+    dependsOn 'dockerBuild'
+    commandLine 'docker', 'run', '--rm',
+            '--name', 'caching-demo-app',
+            '-p', '8080:8080',
+            '--network', 'caching-demo-net',
+            'caching-demo-app'
+}
+
+task composeDown(type: Exec) {
+    group = 'Docker'
+    description = 'Stops and removes all containers and volumes'
+
+    commandLine 'docker-compose', 'down', '-v'
+}
+
+task composeUp(type: Exec) {
+    group = 'Docker'
+    description = 'Builds and starts all containers'
+
+    commandLine 'docker-compose', 'up', '--build'
+}
+
+task composeRestart {
+    group = 'Docker'
+    description = 'Performs docker-compose down -v followed by up --build'
+
+    dependsOn 'composeDown', 'composeUp'
+}
+
+
+
