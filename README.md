@@ -78,8 +78,8 @@ This application demonstrates the behavior, performance, and trade-offs of three
 git clone <repository-url>
 cd caching-demo
 
-# Start all services with Docker Compose
-docker-compose up --build
+# Start all services all together
+**Click on dockerRun directly, have created a pipeline for all the required jobs.**
 
 # Wait for all services to be healthy (~2-3 minutes)
 ```
@@ -140,15 +140,7 @@ Import `CachingDemo.postman_collection.json` into Postman for easy testing.
 | **Memory Efficiency** | High | Very High | High |
 | **Use Cases** | Web apps, Real-time analytics | Simple web caching | Distributed apps, Microservices |
 
-## 🎬 Demo Session Guide
 
-### Phase 1: Setup & Introduction (5 minutes)
-
-1. **Show the architecture diagram**
-2. **Start the application** with `docker-compose up`
-3. **Explain the problem**: Why do we need caching?
-
-### Phase 2: Live Demo (15 minutes)
 
 ```bash
 # Step 1: Store some data
@@ -181,18 +173,6 @@ curl http://localhost:8080/api/v1/cache/hazelcast/weather-toronto
 curl http://localhost:8080/api/v1/metrics?limit=10
 ```
 
-### Phase 3: Showcase Features (8 minutes)
-
-1. **Show colorful logs** in the terminal
-2. **Demonstrate persistence** by restarting Redis container
-3. **Explain TTL behavior** and expiration
-4. **Show metrics collection** and analysis
-
-### Phase 4: Production Insights (5 minutes)
-
-- **When to use each cache**
-- **Common pitfalls and solutions**
-- **Monitoring and alerting**
 
 ## 📊 Performance Metrics
 
@@ -249,12 +229,7 @@ Thread.sleep(1000); // Simulate 1 second DB latency
 
 **1. Services not starting**
 ```bash
-# Check service status
-docker-compose ps
-
-# View logs
-docker-compose logs app
-docker-compose logs mysql
+# Use composeDown option in gradle folder, then clean and dockerRun.
 ```
 
 **2. Database connection issues**
@@ -293,16 +268,6 @@ curl http://localhost:8080/actuator/health/redis
 curl http://localhost:8080/actuator/health/db
 ```
 
-## 🎓 Learning Outcomes
-
-After this session, you'll understand:
-
-- **When to choose** Redis vs Memcached vs Hazelcast
-- **How to implement** caching in Spring Boot
-- **Performance implications** of different caching strategies
-- **Persistence trade-offs** and TTL management
-- **Monitoring and metrics** for cache performance
-- **Common pitfalls** and best practices
 
 ## 📝 Additional Resources
 
@@ -315,4 +280,4 @@ After this session, you'll understand:
 
 **Happy Caching! 🚀**
 
-*Prepared for Sun Life Financial Technical Session*
+*Prepared by Samrat*
